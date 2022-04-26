@@ -98,6 +98,7 @@ public class LoginController {
         return "redirect:/";
     }
 
+    // 쿼리 파라미터를 받기 위해 @RequestParam 을 사용한다
     @PostMapping("/login")
     public String loginV4(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult,
                           @RequestParam(defaultValue = "/") String redirectURL,
@@ -114,13 +115,14 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        // 로그인 성공 처리 수정 -> 직접만든 세션저장소가 아닌 서블릿이 지원하는 세션 저장소를 사용
-        // getSession(true) : 세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성 <-> false 는 새롭게 세션을 생성하지는 않음
+        // 로그인 성공 처리
+
+        // 세션이 있으면 있는 세션 반환. 없으면 신규 세션 생성
         HttpSession session = request.getSession(); // default 로 true 값을 가짐
         // 세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-        // redirectURL 적용
+        // 이제 로그인시 이전 접근했던 페이지로 이동하기 위해 redirectURL 적용
         return "redirect:" + redirectURL;
     }
 
